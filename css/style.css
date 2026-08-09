@@ -807,6 +807,23 @@ body {
     margin-top: 0.5rem;
 }
 
+.admin-user div {
+    margin-top: 0.25rem;
+}
+
+.admin-access-level {
+    display: inline-block;
+    margin-left: 0.45rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .sidebar-nav {
     padding: 1rem 0;
 }
@@ -836,6 +853,12 @@ body {
     margin-left: 280px;
     flex: 1;
     padding: 2rem;
+}
+
+/* Mobile admin helpers should stay hidden on desktop */
+.admin-mobile-topbar,
+.admin-sidebar-backdrop {
+    display: none;
 }
 
 .admin-section {
@@ -1343,6 +1366,7 @@ body {
     .admin-sidebar-backdrop {
         position: fixed;
         inset: 0;
+        display: block;
         background: rgba(0, 0, 0, 0.45);
         opacity: 0;
         pointer-events: none;

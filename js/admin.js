@@ -20,6 +20,19 @@ import {
 let currentSection = 'posts';
 let editingId = null;
 
+function getAccessLevelLabel(level) {
+    switch (level) {
+        case ACCESS_LEVELS.MANAGEMENT:
+            return 'Management';
+        case ACCESS_LEVELS.EDITOR:
+            return 'Editor';
+        case ACCESS_LEVELS.MEMBER:
+            return 'Member';
+        default:
+            return 'Public';
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
@@ -52,8 +65,12 @@ function checkAdminAccess() {
     
     // Display user info
     const adminName = document.getElementById('admin-name');
+    const adminAccessLevel = document.getElementById('admin-access-level');
     if (adminName) {
         adminName.textContent = user.name || user.email;
+    }
+    if (adminAccessLevel) {
+        adminAccessLevel.textContent = getAccessLevelLabel(user.accessLevel);
     }
 }
 
@@ -77,10 +94,11 @@ function initAdminPanel() {
     // Logout button
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
+        logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            if (confirm('Are you sure you want to logout?')) {
-                logout();
+            const shouldLogout = await showLogoutPrompt();
+            if (shouldLogout) {
+                await logout();
             }
         });
     }
@@ -110,6 +128,58 @@ function initAdminPanel() {
     
     // Load initial content
     loadSectionContent('posts');
+}
+
+function showLogoutPrompt() {
+    return new Promise((resolve) => {
+        const existingModal = document.getElementById('logout-confirm-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'logout-confirm-modal';
+        modal.className = 'logout-confirm-overlay';
+        modal.innerHTML = `
+            <div class="logout-confirm-card">
+                <div class="logout-confirm-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <h3>Log out now?</h3>
+                <p>You are signed in. Do you want to log out from your account?</p>
+                <div class="logout-confirm-actions">
+                    <button type="button" class="btn btn-secondary" data-action="cancel">Stay signed in</button>
+                    <button type="button" class="btn btn-primary" data-action="logout">
+                        <i class="fas fa-check"></i> Yes, log out
+                    </button>
+                </div>
+            </div>
+        `;
+
+        const cleanup = (result) => {
+            document.removeEventListener('keydown', onKeyDown);
+            modal.remove();
+            resolve(result);
+        };
+
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                cleanup(false);
+            }
+        };
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                cleanup(false);
+            }
+        });
+
+        modal.querySelector('[data-action="cancel"]')?.addEventListener('click', () => cleanup(false));
+        modal.querySelector('[data-action="logout"]')?.addEventListener('click', () => cleanup(true));
+
+        document.addEventListener('keydown', onKeyDown);
+        document.body.appendChild(modal);
+    });
 }
 
 function initMobileSidebar() {
