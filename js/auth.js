@@ -270,7 +270,31 @@ export async function createUser(userData) {
     }
 }
 
-function showLogoutPrompt() {
+export function initPasswordToggles(root = document) {
+    root.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const field = button.closest('.password-field');
+            const input = field?.querySelector('[data-password-input]');
+            if (!(input instanceof HTMLInputElement)) return;
+
+            const isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            button.setAttribute('aria-pressed', String(isHidden));
+            button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+
+            const icon = button.querySelector('i');
+            if (icon) {
+                icon.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+            }
+            const label = button.querySelector('.password-toggle-label');
+            if (label) {
+                label.textContent = isHidden ? 'Hide' : 'Show';
+            }
+        });
+    });
+}
+
+export function showLogoutPrompt() {
     return new Promise((resolve) => {
         const existingModal = document.getElementById('logout-confirm-modal');
         if (existingModal) {
@@ -367,6 +391,7 @@ if (document.getElementById('login-form')) {
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
     const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+    initPasswordToggles(document);
 
     const clearMessages = () => {
         errorMessage.textContent = '';

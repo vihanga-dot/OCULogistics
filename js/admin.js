@@ -2,7 +2,7 @@
 import { db } from './firebase-config.js';
 import { auth } from './firebase-config.js';
 import { uploadToCloudinary, optimizeCloudinaryUrl, validateImageFile } from './cloudinary-upload.js';
-import { initAuth, getCurrentUser, hasAccess, ACCESS_LEVELS, logout, createUser, onAuthResolved } from './auth.js';
+import { initAuth, getCurrentUser, hasAccess, ACCESS_LEVELS, logout, createUser, onAuthResolved, showLogoutPrompt, initPasswordToggles } from './auth.js';
 import { escapeHTML, safeUrl, showNotification, DRIVE_HOSTS, FACEBOOK_HOSTS } from './utils.js';
 import { 
     collection, 
@@ -47,8 +47,7 @@ function checkAdminAccess() {
     const user = getCurrentUser();
     
     if (!user || user.accessLevel < ACCESS_LEVELS.EDITOR) {
-        alert('Access denied. You need editor or management privileges.');
-        window.location.href = 'index.html';
+        window.location.replace('index.html');
         return;
     }
     
@@ -128,58 +127,6 @@ function initAdminPanel() {
     
     // Load initial content
     loadSectionContent('posts');
-}
-
-function showLogoutPrompt() {
-    return new Promise((resolve) => {
-        const existingModal = document.getElementById('logout-confirm-modal');
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-        const modal = document.createElement('div');
-        modal.id = 'logout-confirm-modal';
-        modal.className = 'logout-confirm-overlay';
-        modal.innerHTML = `
-            <div class="logout-confirm-card">
-                <div class="logout-confirm-icon">
-                    <i class="fas fa-sign-out-alt"></i>
-                </div>
-                <h3>Log out now?</h3>
-                <p>You are signed in. Do you want to log out from your account?</p>
-                <div class="logout-confirm-actions">
-                    <button type="button" class="btn btn-secondary" data-action="cancel">Stay signed in</button>
-                    <button type="button" class="btn btn-primary" data-action="logout">
-                        <i class="fas fa-check"></i> Yes, log out
-                    </button>
-                </div>
-            </div>
-        `;
-
-        const cleanup = (result) => {
-            document.removeEventListener('keydown', onKeyDown);
-            modal.remove();
-            resolve(result);
-        };
-
-        const onKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                cleanup(false);
-            }
-        };
-
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                cleanup(false);
-            }
-        });
-
-        modal.querySelector('[data-action="cancel"]')?.addEventListener('click', () => cleanup(false));
-        modal.querySelector('[data-action="logout"]')?.addEventListener('click', () => cleanup(true));
-
-        document.addEventListener('keydown', onKeyDown);
-        document.body.appendChild(modal);
-    });
 }
 
 function initMobileSidebar() {
@@ -418,7 +365,8 @@ async function openModal(section, id = null) {
     
     modalTitle.textContent = `${editingId ? 'Edit' : 'Add'} ${capitalize(section.slice(0, -1))}`;
     formFields.innerHTML = getFormFields(section, data);
-    
+    initPasswordToggles(formFields);
+
     modal.classList.add('show');
 }
 
@@ -617,7 +565,13 @@ function getFormFields(section, data = null) {
             ${!editingId ? `
                 <div class="form-group">
                     <label for="password">Password *</label>
-                    <input type="password" id="password" name="password" minlength="6" required>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" minlength="6" data-password-input required>
+                        <button type="button" class="password-toggle" data-password-toggle aria-label="Show password" aria-pressed="false">
+                            <i class="fas fa-eye"></i>
+                            <span class="password-toggle-label">Show</span>
+                        </button>
+                    </div>
                     <small>Minimum 6 characters</small>
                 </div>
             ` : '<small>Note: Password cannot be changed from admin panel for security reasons.</small>'}
