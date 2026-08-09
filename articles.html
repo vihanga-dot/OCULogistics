@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - OUSL Logistics Club</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="OUSL Logistics Club Logo" class="logo-img">
+                <span>OUSL Logistics Club</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="papers.html" class="nav-link">Papers</a></li>
+                <li><a href="notes.html" class="nav-link">Notes</a></li>
+                <li><a href="articles.html" class="nav-link active">Articles</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="login.html" class="nav-link" id="auth-btn">Login</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-newspaper"></i> Articles</h1>
+                <p class="page-description">Read club articles and updates</p>
+            </div>
+
+            <div class="articles-container" id="articles-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="copyright">&copy; 2024 Ocean University Logistics Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="js/articles.js"></script>
+</body>
+</html>

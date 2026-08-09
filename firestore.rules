@@ -1,0 +1,146 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+    
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if user has required access level
+    function hasAccessLevel(level) {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.accessLevel >= level;
+    }
+    
+    // Check if user is the owner of the content
+    function isOwner(authorId) {
+      return isAuthenticated() && request.auth.uid == authorId;
+    }
+    
+    // Check if user is management (level 3)
+    function isManagement() {
+      return hasAccessLevel(3);
+    }
+
+    // Check that an update does not change the document's authorId field —
+    // prevents an owner from reassigning content ownership to another uid.
+    function authorIdUnchanged() {
+      return request.resource.data.authorId == resource.data.authorId;
+    }
+    
+    // ============================================
+    // SECURITY RULES
+    // ============================================
+    
+    // USERS COLLECTION - Management Only for Write, User/Management for Read
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || hasAccessLevel(3));
+      allow create: if isManagement();
+      allow update: if isManagement();
+      allow delete: if isManagement();
+    }
+    
+    // POSTS COLLECTION
+    match /posts/{postId} {
+      // Public can read published posts
+      // Editors+ can read all posts
+      allow read: if resource.data.published == true || hasAccessLevel(2);
+      
+      // Editors can create posts
+      allow create: if hasAccessLevel(2) && 
+                       request.resource.data.authorId == request.auth.uid;
+      
+      // Management or owner can update
+      allow update: if isManagement() || 
+                       (isOwner(resource.data.authorId) && authorIdUnchanged());
+      
+      // Management or owner can delete
+      allow delete: if isManagement() || 
+                       isOwner(resource.data.authorId);
+    }
+    
+    // ARTICLES COLLECTION
+    match /articles/{articleId} {
+      // Public can read published articles
+      // Editors+ can read all articles
+      allow read: if resource.data.published == true || hasAccessLevel(2);
+      
+      // Editors can create articles
+      allow create: if hasAccessLevel(2) && 
+                       request.resource.data.authorId == request.auth.uid;
+      
+      // Management or owner can update
+      allow update: if isManagement() || 
+                       (isOwner(resource.data.authorId) && authorIdUnchanged());
+      
+      // Management or owner can delete
+      allow delete: if isManagement() || 
+                       isOwner(resource.data.authorId);
+    }
+    
+    // PAPERS COLLECTION - Members Only
+    match /papers/{paperId} {
+      // Only members and above can read
+      allow read: if hasAccessLevel(1);
+      
+      // Editors can create papers
+      allow create: if hasAccessLevel(2) && 
+                       request.resource.data.authorId == request.auth.uid;
+      
+      // Management or owner can update
+      allow update: if isManagement() || 
+                       (isOwner(resource.data.authorId) && authorIdUnchanged());
+      
+      // Management or owner can delete
+      allow delete: if isManagement() || 
+                       isOwner(resource.data.authorId);
+    }
+    
+    // NOTES COLLECTION - Members Only
+    match /notes/{noteId} {
+      // Only members and above can read
+      allow read: if hasAccessLevel(1);
+      
+      // Editors can create notes
+      allow create: if hasAccessLevel(2) && 
+                       request.resource.data.authorId == request.auth.uid;
+      
+      // Management or owner can update
+      allow update: if isManagement() || 
+                       (isOwner(resource.data.authorId) && authorIdUnchanged());
+      
+      // Management or owner can delete
+      allow delete: if isManagement() || 
+                       isOwner(resource.data.authorId);
+    }
+    
+    // EVENTS COLLECTION - Public Read
+    match /events/{eventId} {
+      // Public can read all events
+      allow read: if true;
+      
+      // Editors can create events
+      allow create: if hasAccessLevel(2) && 
+                       request.resource.data.authorId == request.auth.uid;
+      
+      // Management or owner can update
+      allow update: if isManagement() || 
+                       (isOwner(resource.data.authorId) && authorIdUnchanged());
+      
+      // Management or owner can delete
+      allow delete: if isManagement() || 
+                       isOwner(resource.data.authorId);
+    }
+    
+    // Deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

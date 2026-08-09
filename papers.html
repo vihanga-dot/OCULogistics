@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers - OUSL Logistics Club</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="OUSL Logistics Club Logo" class="logo-img">
+                <span>OUSL Logistics Club</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="papers.html" class="nav-link active">Papers</a></li>
+                <li><a href="notes.html" class="nav-link">Notes</a></li>
+                <li><a href="articles.html" class="nav-link">Articles</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="login.html" class="nav-link" id="auth-btn">Login</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-book"></i> Academic Papers</h1>
+                <p class="page-description">Access research papers and academic resources</p>
+            </div>
+            
+            <div class="access-message" id="access-message"></div>
+            
+            <!-- Search and Filter -->
+            <div class="filters" id="filters-container" style="display: none;">
+                <input type="text" id="search-input" class="search-input" placeholder="Search papers...">
+                <select id="filter-category" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="supply-chain">Supply Chain</option>
+                    <option value="logistics">Logistics</option>
+                    <option value="operations">Operations</option>
+                    <option value="management">Management</option>
+                </select>
+            </div>
+
+            <div class="content-grid" id="papers-grid">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="copyright">&copy; 2024 Ocean University Logistics Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
