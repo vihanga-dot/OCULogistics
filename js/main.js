@@ -14,8 +14,51 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initNavbar();
+    initGlobe();
     loadPageContent();
 });
+
+/**
+ * Initialize the 3D globe in the hero (if present on page)
+ */
+function initGlobe() {
+    const container = document.getElementById('globe-container');
+    const fallback  = document.getElementById('globe-fallback');
+    if (!container) return;
+
+    let globe = null;
+    const showFallback = () => {
+        if (fallback) {
+            fallback.style.display = 'block';
+        }
+    };
+
+    const tryLoad = async () => {
+        try {
+            // Dynamic import so the page works even if the module path is wrong
+            const { ShippingGlobe, renderFallback } = await import('./globe.js');
+            globe = new ShippingGlobe(container);
+            if (fallback) fallback.style.display = 'none';
+        } catch (err) {
+            console.warn('Globe failed to initialize, using SVG fallback.', err);
+            showFallback();
+            if (fallback && typeof renderFallback === 'function') {
+                renderFallback(fallback);
+            }
+        }
+    };
+
+    // Defer slightly so layout has settled
+    setTimeout(tryLoad, 80);
+
+    window.addEventListener('resize', () => {
+        if (globe && typeof globe.dispose === 'function') {
+            globe.dispose();
+            globe = null;
+        }
+        setTimeout(tryLoad, 120);
+    });
+}
 
 /**
  * Initialize Navbar

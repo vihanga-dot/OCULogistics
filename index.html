@@ -43,19 +43,113 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <!-- 3D Globe (Three.js) — falls back to inline SVG if Three.js fails -->
+        <div id="globe-container" aria-hidden="true"></div>
+        <div class="globe-fallback" id="globe-fallback" style="display:none;"></div>
+
         <div class="hero-content">
-            <p class="hero-eyebrow">OUSL &middot; Logistics &amp; Supply Chain Club</p>
+            <p class="hero-eyebrow">
+                <span class="compass-badge"><i class="fas fa-compass"></i> Ocean Routes</span>
+                &middot; OUSL Logistics &amp; Supply Chain Club
+            </p>
             <h1 class="hero-title fade-in">Welcome to Ocean University Logistics Club</h1>
-            <p class="hero-subtitle">Navigating the Future of Supply Chain Excellence</p>
+            <p class="hero-subtitle oc-typing-active" data-typing="Navigating the Future of Supply Chain Excellence">Navigating the Future of Supply Chain Excellence</p>
             <div class="hero-buttons">
                 <a href="#about" class="btn btn-primary">Learn More</a>
                 <a href="articles.html" class="btn btn-secondary">Read Articles</a>
             </div>
+            <!-- Route ribbon: hubs (Sri Lanka) → destination ports -->
+            <div class="route-ribbon" aria-label="Shipping routes">
+                <span class="route-ribbon-item">
+                    <span class="rb-dot hub"></span>
+                    <span class="rb-name">Colombo</span>
+                    <span class="rb-line">&rarr;</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot hub"></span>
+                    <span class="rb-name">Trincomalee</span>
+                    <span class="rb-line">&rarr;</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot dest"></span>
+                    <span class="rb-name">Singapore</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot dest"></span>
+                    <span class="rb-name">Dubai</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot dest"></span>
+                    <span class="rb-name">Shanghai</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot dest"></span>
+                    <span class="rb-name">Rotterdam</span>
+                </span>
+                <span class="route-ribbon-item">
+                    <span class="rb-dot dest"></span>
+                    <span class="rb-name">Mumbai</span>
+                </span>
+            </div>
         </div>
     </section>
 
+    <!-- Route arc divider (visual motif connecting sections) -->
+    <div class="route-divider" aria-hidden="true">
+        <svg viewBox="0 0 100 34" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%"   stop-color="#FF8A3D" stop-opacity="0.9"/>
+                    <stop offset="50%"  stop-color="#2FD4C6" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#FF8A3D" stop-opacity="0.4"/>
+                </linearGradient>
+            </defs>
+            <!-- Globe silhouette -->
+            <circle cx="50" cy="18" r="14" fill="none" stroke="rgba(0,180,216,0.15)" stroke-width="0.8"/>
+            <!-- Route arcs -->
+            <path d="M 28,24 Q 50,2 72,8"  fill="none" stroke="url(#routeGrad)" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M 30,26 Q 48,4 78,12" fill="none" stroke="url(#routeGrad)" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M 32,30 Q 46,8 84,18" fill="none" stroke="url(#routeGrad)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 2"/>
+            <!-- Port dots -->
+            <circle cx="28" cy="24" r="1.4" fill="#FF8A3D"><animate attributeName="r" values="1.4;2.2;1.4" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="30" cy="26" r="1.3" fill="#FF8A3D"><animate attributeName="r" values="1.3;2;1.3" dur="2.8s" repeatCount="indefinite"/></circle>
+            <circle cx="84" cy="18" r="1.5" fill="#2FD4C6"><animate attributeName="r" values="1.5;2.4;1.5" dur="3.1s" repeatCount="indefinite"/></circle>
+            <circle cx="78" cy="12" r="1.4" fill="#2FD4C6"><animate attributeName="r" values="1.4;2.2;1.4" dur="2.7s" repeatCount="indefinite"/></circle>
+            <circle cx="72" cy="8"  r="1.3" fill="#2FD4C6"><animate attributeName="r" values="1.3;2.1;1.3" dur="3.4s" repeatCount="indefinite"/></circle>
+        </svg>
+    </div>
+
     <!-- About Section -->
     <section class="about" id="about">
+        <!-- Subtle route grid background -->
+        <div class="route-bg-grid" aria-hidden="true">
+            <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="aboutGridGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%"   stop-color="#2FD4C6" stop-opacity="0.05"/>
+                        <stop offset="50%"  stop-color="#FF8A3D" stop-opacity="0.04"/>
+                        <stop offset="100%" stop-color="#2FD4C6" stop-opacity="0.06"/>
+                    </linearGradient>
+                </defs>
+                <g stroke="url(#aboutGridGrad)" stroke-width="0.6" fill="none">
+                    <line x1="0" y1="60"  x2="1200" y2="60"/>
+                    <line x1="0" y1="120" x2="1200" y2="120"/>
+                    <line x1="0" y1="180" x2="1200" y2="180"/>
+                    <line x1="0" y1="240" x2="1200" y2="240"/>
+                    <line x1="200" y1="0" x2="200" y2="300"/>
+                    <line x1="400" y1="0" x2="400" y2="300"/>
+                    <line x1="600" y1="0" x2="600" y2="300"/>
+                    <line x1="800" y1="0" x2="800" y2="300"/>
+                    <line x1="1000" y1="0" x2="1000" y2="300"/>
+                </g>
+                <circle cx="600" cy="150" r="80" fill="none" stroke="rgba(0,180,216,0.08)" stroke-width="1"/>
+                <circle cx="600" cy="150" r="100" fill="none" stroke="rgba(0,180,216,0.04)" stroke-width="0.5" stroke-dasharray="3 4"/>
+                <path d="M 100,240 Q 400,40 1100,80" fill="none" stroke="#FF8A3D" stroke-width="1" opacity="0.2"/>
+                <path d="M 120,260 Q 500,60 1120,100" fill="none" stroke="#2FD4C6" stroke-width="0.8" opacity="0.15" stroke-dasharray="4 3"/>
+                <circle cx="100" cy="240" r="3" fill="#FF8A3D" opacity="0.4"/>
+                <circle cx="1100" cy="80" r="3.5" fill="#2FD4C6" opacity="0.5"/>
+            </svg>
+        </div>
         <div class="container">
             <h2 class="section-title">About Us</h2>
             <p class="section-description">
@@ -64,6 +158,30 @@
                 and industry experts to share insights, research, and best practices.
             </p>
             
+            <!-- Route stats: our logistical footprint -->
+            <div class="features-grid" id="route-stats-grid">
+                <div class="route-stat stagger-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Active Routes</div>
+                </div>
+                <div class="route-stat stagger-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Countries Reached</div>
+                </div>
+                <div class="route-stat stagger-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-number">96+</div>
+                    <div class="stat-label">Weekly Shipments</div>
+                </div>
+                <div class="route-stat stagger-item">
+                    <div class="stat-dot"></div>
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Partner Ports</div>
+                </div>
+            </div>
+
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -92,6 +210,28 @@
 
     <!-- Latest Posts Section -->
     <section class="latest-posts">
+        <!-- Faint route grid behind posts -->
+        <div class="route-bg-grid" aria-hidden="true">
+            <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="postsGridGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%"   stop-color="#2FD4C6" stop-opacity="0.04"/>
+                        <stop offset="100%" stop-color="#FF8A3D" stop-opacity="0.03"/>
+                    </linearGradient>
+                </defs>
+                <g stroke="url(#postsGridGrad)" stroke-width="0.5" fill="none">
+                    <line x1="0" y1="60"  x2="1200" y2="60"/>
+                    <line x1="0" y1="120" x2="1200" y2="120"/>
+                    <line x1="0" y1="180" x2="1200" y2="180"/>
+                    <line x1="0" y1="240" x2="1200" y2="240"/>
+                    <line x1="200" y1="0" x2="200" y2="300"/>
+                    <line x1="400" y1="0" x2="400" y2="300"/>
+                    <line x1="600" y1="0" x2="600" y2="300"/>
+                    <line x1="800" y1="0" x2="800" y2="300"/>
+                    <line x1="1000" y1="0" x2="1000" y2="300"/>
+                </g>
+            </svg>
+        </div>
         <div class="container">
             <h2 class="section-title">Latest Updates</h2>
             <div class="posts-grid" id="posts-grid">
@@ -105,13 +245,13 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Contact Us</h3>
+                    <h3>Port of Call</h3>
                     <p><i class="fas fa-envelope"></i> logistics@oceanuni.lk</p>
                     <p><i class="fas fa-phone"></i> +94 11 XXX XXXX</p>
                     <p><i class="fas fa-map-marker-alt"></i> Ocean University, Sri Lanka</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
+                    <h3>Chart Your Course</h3>
                     <ul>
                         <li><a href="papers.html">Papers</a></li>
                         <li><a href="notes.html">Notes</a></li>
@@ -120,7 +260,7 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Follow Us</h3>
+                    <h3>Follow Our Wake</h3>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -134,6 +274,16 @@
     </footer>
 
     <!-- Scripts -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+      }
+    }
+    </script>
+    <script type="module" src="js/globe.js"></script>
+    <script type="module" src="js/effects.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

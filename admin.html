@@ -12,9 +12,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Subtle route grid background -->
+    <div class="route-bg-grid" aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="adminGridGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#2FD4C6" stop-opacity="0.04"/>
+                    <stop offset="50%" stop-color="#FF8A3D" stop-opacity="0.03"/>
+                    <stop offset="100%" stop-color="#2FD4C6" stop-opacity="0.05"/>
+                </linearGradient>
+            </defs>
+            <g stroke="url(#adminGridGrad)" stroke-width="0.5" fill="none">
+                <line x1="0" y1="100" x2="1200" y2="100"/><line x1="0" y1="200" x2="1200" y2="200"/>
+                <line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="400" x2="1200" y2="400"/>
+                <line x1="0" y1="500" x2="1200" y2="500"/><line x1="0" y1="600" x2="1200" y2="600"/>
+                <line x1="0" y1="700" x2="1200" y2="700"/>
+                <line x1="150" y1="0" x2="150" y2="800"/><line x1="300" y1="0" x2="300" y2="800"/>
+                <line x1="450" y1="0" x2="450" y2="800"/><line x1="600" y1="0" x2="600" y2="800"/>
+                <line x1="750" y1="0" x2="750" y2="800"/><line x1="900" y1="0" x2="900" y2="800"/>
+                <line x1="1050" y1="0" x2="1050" y2="800"/>
+            </g>
+            <circle cx="1000" cy="100" r="60" fill="none" stroke="rgba(0,180,216,0.04)" stroke-width="0.8"/>
+            <path d="M 50,750 Q 600,200 1150,50" fill="none" stroke="#FF8A3D" stroke-width="1" opacity="0.12"/>
+        </svg>
+    </div>
     <div class="admin-container">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
+                <div class="compass-badge" style="margin: 0 auto 1rem; justify-content: center;"><i class="fas fa-compass"></i> Command Bridge</div>
                 <a href="index.html" class="logo" style="text-decoration: none;">
                     <img src="assets/images/logo.png" alt="OUSL Logistics Club Logo" class="logo-img">
                     <span>OUSL Logistics Club</span>
@@ -105,6 +130,7 @@
         </div>
     </div>
 
+    <script type="module" src="js/effects.js"></script>
     <script type="module" src="js/admin.js"></script>
 </body>
 </html>

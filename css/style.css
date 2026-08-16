@@ -380,6 +380,7 @@ a {
 .latest-posts,
 .content-section {
     padding: 6.5rem 0;
+    position: relative;
 }
 
 .content-section {
@@ -1492,6 +1493,375 @@ a {
     border-top: 1px solid var(--line);
     color: var(--ink-faint);
     font-size: 0.85rem;
+}
+
+/* ===========================
+   OCULOGISTICS — EFFECTS & ROUTE SYSTEM
+   Classes consumed by js/effects.js (custom cursor, tilt, scroll reveal)
+   plus route/globe themed visual enhancements.
+   =========================== */
+
+/* ---------- Custom cursor (signal dot + wayfind ring) ---------- */
+body.oc-cursor-active .oc-cursor-ring,
+body.oc-cursor-active .oc-cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.15s ease, height 0.15s ease, opacity 0.2s ease;
+}
+body.oc-cursor-active .oc-cursor-dot {
+  width: 5px; height: 5px;
+  background: var(--turquoise);
+  box-shadow: 0 0 8px var(--turquoise);
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+body.oc-cursor-active .oc-cursor-ring {
+  width: 44px; height: 44px;
+  border: 1.5px solid rgba(0, 180, 216, 0.6);
+  background: rgba(0, 180, 216, 0.06);
+  transform: translate(-50%, -50%);
+  transition: width 0.22s ease, height 0.22s ease, border-color 0.2s ease, background 0.2s ease;
+}
+body.oc-cursor-active.oc-cursor-hover .oc-cursor-ring {
+  width: 62px; height: 62px;
+  border-color: var(--primary);
+  background: rgba(0, 119, 182, 0.1);
+}
+body.oc-cursor-active.oc-cursor-hover .oc-cursor-dot {
+  width: 7px; height: 7px;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+}
+body.oc-cursor-active.oc-cursor-down .oc-cursor-ring {
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0.5;
+}
+body.oc-cursor-active.oc-cursor-down .oc-cursor-dot {
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0.5;
+}
+
+/* ---------- Hero typing ---------- */
+.hero-subtitle.oc-typing-active {
+  border-right: 2px solid var(--turquoise);
+  white-space: nowrap;
+  overflow: hidden;
+  width: max-content;
+  max-width: 100%;
+}
+.hero-subtitle.oc-typing-done {
+  border-right-color: transparent;
+  white-space: normal;
+}
+
+/* ---------- Ripple on click ---------- */
+.oc-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 180, 216, 0.32);
+  transform: translate(-50%, -50%) scale(0);
+  animation: ocRipple 0.55s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ocRipple {
+  to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+/* ---------- Card tilt (3D pointer-follow) ---------- */
+.card.oc-tilt,
+.feature-card.oc-tilt,
+.article-card.oc-tilt {
+  perspective: 900px;
+}
+.card.oc-tilt > .card-content,
+.feature-card.oc-tilt > *,
+.article-card.oc-tilt > * {
+  transition: transform 0.12s ease-out;
+}
+body.oc-cursor-active .card.oc-tilt:hover,
+body.oc-cursor-active .feature-card.oc-tilt:hover,
+body.oc-cursor-active .article-card.oc-tilt:hover {
+  box-shadow:
+    0 24px 50px rgba(3, 62, 125, 0.18),
+    0 0 0 1px rgba(0, 180, 216, 0.2);
+}
+
+/* ---------- Scroll reveal ---------- */
+.feature-card,
+.card,
+.article-card,
+.section-title,
+.page-title,
+.section-description,
+.page-description {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.feature-card.oc-revealed,
+.card.oc-revealed,
+.article-card.oc-revealed,
+.section-title.oc-revealed,
+.page-title.oc-revealed,
+.section-description.oc-revealed,
+.page-description.oc-revealed {
+  opacity: 1;
+  transform: none;
+}
+.oc-reveal {
+  transition-delay: var(--oc-delay, 0ms);
+}
+
+/* ---------- Route-themed: arc section divider ---------- */
+.route-divider {
+  position: relative;
+  height: 60px;
+  overflow: visible;
+  pointer-events: none;
+}
+.route-divider::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 40px 40px at 10% 50%, rgba(0, 180, 216, 0.12), transparent 70%),
+    radial-gradient(ellipse 40px 40px at 90% 50%, rgba(0, 180, 216, 0.12), transparent 70%);
+  opacity: 0.5;
+}
+.route-divider svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Pulse ring keyframes for SVG fallback ---------- */
+@keyframes ocPulseRing {
+  0%, 100% { r: 6; opacity: 0.5; }
+  50%      { r: 18; opacity: 0; }
+}
+@keyframes ocRouteDot {
+  from { stroke-dashoffset: var(--oc-route-dash, 1000); }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ---------- Route stat badges (in about / hero) ---------- */
+.route-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  min-width: 130px;
+}
+.route-stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--turquoise));
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.route-stat .stat-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.route-stat .stat-label {
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.route-stat .stat-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--turquoise);
+  box-shadow: 0 0 8px var(--turquoise);
+  margin-bottom: 0.75rem;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ---------- Route ribbon (hero, port coordinate strip) ---------- */
+.route-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.8rem;
+  margin-top: 1.75rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+}
+.route-ribbon-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.route-ribbon-item .rb-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.route-ribbon-item .rb-dot.hub {
+  background: var(--coral);
+  box-shadow: 0 0 6px var(--coral);
+}
+.route-ribbon-item .rb-dot.dest {
+  background: var(--turquoise);
+  box-shadow: 0 0 6px var(--turquoise);
+}
+.route-ribbon-item .rb-line {
+  color: var(--ink-faint);
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+.route-ribbon-item .rb-name {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ---------- Globe hero container ---------- */
+#globe-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#globe-container canvas {
+  pointer-events: auto;
+  cursor: grab;
+}
+#globe-container canvas:active {
+  cursor: grabbing;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+.hero {
+  overflow: visible;
+}
+
+/* ---------- Globe fallback (SVG) ---------- */
+.globe-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.globe-fallback svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- World-map background grid (route motif) ---------- */
+.route-bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
+.route-bg-grid svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Compass badge (hero) ---------- */
+.compass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--turquoise);
+  background: rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.25);
+  padding: 0.3rem 0.9rem;
+  border-radius: var(--pill);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.compass-badge i {
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+/* ---------- Article share button route style ---------- */
+.share-btn {
+  position: relative;
+  overflow: hidden;
+}
+.share-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 40%, rgba(0, 180, 216, 0.15) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.share-btn:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Card glow on hover (route accent) ---------- */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow 0.3s ease;
+  pointer-events: none;
+}
+.card:hover::after {
+  box-shadow: inset 0 0 0 1px rgba(0, 180, 216, 0.25);
+}
+.card.has-image::after {
+  top: 0; left: 0; right: 0;
+  bottom: 40px;
+  border-radius: 0;
+}
+
+/* ---------- Management badge (admin) route style ---------- */
+.admin-access-level {
+  position: relative;
+}
+.admin-access-level::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--turquoise), var(--primary));
+  opacity: 0.15;
+  z-index: -1;
 }
 
 /* ===========================

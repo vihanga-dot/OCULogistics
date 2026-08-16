@@ -13,8 +13,53 @@
 </head>
 <body>
     <div class="login-container">
+        <!-- Subtle route grid background -->
+        <div class="route-bg-grid" aria-hidden="true">
+            <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="routeGridGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%"   stop-color="#2FD4C6" stop-opacity="0.08"/>
+                        <stop offset="50%"  stop-color="#FF8A3D" stop-opacity="0.05"/>
+                        <stop offset="100%" stop-color="#2FD4C6" stop-opacity="0.08"/>
+                    </linearGradient>
+                </defs>
+                <!-- Grid lines -->
+                <g stroke="url(#routeGridGrad)" stroke-width="0.5" fill="none">
+                    <line x1="0" y1="50"  x2="400" y2="50"/>
+                    <line x1="0" y1="100" x2="400" y2="100"/>
+                    <line x1="0" y1="150" x2="400" y2="150"/>
+                    <line x1="0" y1="200" x2="400" y2="200"/>
+                    <line x1="0" y1="250" x2="400" y2="250"/>
+                    <line x1="0" y1="300" x2="400" y2="300"/>
+                    <line x1="0" y1="350" x2="400" y2="350"/>
+                    <line x1="50"  y1="0" x2="50"  y2="400"/>
+                    <line x1="100" y1="0" x2="100" y2="400"/>
+                    <line x1="150" y1="0" x2="150" y2="400"/>
+                    <line x1="200" y1="0" x2="200" y2="400"/>
+                    <line x1="250" y1="0" x2="250" y2="400"/>
+                    <line x1="300" y1="0" x2="300" y2="400"/>
+                    <line x1="350" y1="0" x2="350" y2="400"/>
+                </g>
+                <!-- Compass rose -->
+                <g transform="translate(320,60)" opacity="0.25">
+                    <circle r="32" fill="none" stroke="#2FD4C6" stroke-width="0.8"/>
+                    <line x1="0" y1="-24" x2="0" y2="24" stroke="#FF8A3D" stroke-width="1"/>
+                    <line x1="-24" y1="0" x2="24" y2="0" stroke="#2FD4C6" stroke-width="0.8"/>
+                    <text x="0" y="-28" text-anchor="middle" fill="#FF8A3D" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">N</text>
+                    <text x="0" y="34" text-anchor="middle" fill="#2FD4C6" font-size="7" font-family="Space Grotesk,sans-serif">S</text>
+                    <text x="30" y="4" text-anchor="middle" fill="#2FD4C6" font-size="7" font-family="Space Grotesk,sans-serif">E</text>
+                    <text x="-30" y="4" text-anchor="middle" fill="#2FD4C6" font-size="7" font-family="Space Grotesk,sans-serif">W</text>
+                </g>
+                <!-- Route arc -->
+                <path d="M 40,340 Q 200,120 360,60" fill="none" stroke="#FF8A3D" stroke-width="1" opacity="0.3"/>
+                <circle cx="40" cy="340" r="2.5" fill="#FF8A3D" opacity="0.6"/>
+                <circle cx="360" cy="60" r="3" fill="#2FD4C6" opacity="0.7"/>
+            </svg>
+        </div>
+
         <div class="login-box slide-up">
             <div class="login-header">
+                <div class="compass-badge" style="margin: 0 auto 1rem;"><i class="fas fa-compass"></i> Crew Login</div>
                 <i class="fas fa-ship"></i>
                 <h2>Member Login</h2>
                 <p>Access your account</p>
@@ -50,11 +95,12 @@
             </form>
             
             <div class="login-footer">
-                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Chart Course &rarr; Home</a>
             </div>
         </div>
     </div>
 
+    <script type="module" src="js/effects.js"></script>
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>
